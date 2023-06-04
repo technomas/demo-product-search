@@ -4,14 +4,16 @@
       <input-search v-model="searchQuery" />
     </div>
     <div class="page__main-list">
-      <div class="page__main-item" v-for="product in filteredProducts" :key="product.id">
+      <div v-if="filteredProducts && filteredProducts?.length> 0" class="page__main-item" v-for="product in filteredProducts" :key="product.id">
         <product-card :product="product" />
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { IProduct } from '~/interface';
+
 useHead({
   title: 'Product Search and Display with SEO',
   meta: [
@@ -21,17 +23,20 @@ useHead({
     },
   ],
 });
-const searchQuery = ref('');
+const searchQuery = ref<string>('');
 
-const { data: products } = await useAsyncData('products', () => $fetch('https://fakestoreapi.com/products'))
+const { data: products } = await useAsyncData<IProduct[]>('products', () => $fetch('https://fakestoreapi.com/products'))
 
-const filteredProducts = computed(() => {
-  return products?.value?.filter(product =>
+const filteredProducts = computed<IProduct[] | undefined>(() => {
+  //Filtered  products
+  if(products?.value){
+    return products?.value?.filter(product =>
     product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
+  }
 });
 
-watch(searchQuery, () => {
+watch<string>(searchQuery, () => {
   // Update the URL with search query parameter
   const currentPath = window.location.pathname;
   const urlSearchParams = new URLSearchParams(window.location.search);

@@ -6,7 +6,11 @@ I used next tools:
 - https://fakestoreapi.com/
 - Nuxt 3 with default configuration
 
-Time spent: 4 hours, I did not have time to implement part of the functions: seo-friendly urls, typing of the whole project.
+Features: 
+- seo-friendly urls && meta tags
+- full typing of the project
+
+5 hours spent per project
 
 ## Setup
 

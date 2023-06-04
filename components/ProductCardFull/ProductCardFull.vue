@@ -1,6 +1,7 @@
 <template>
   <section class="md:max-w-[640px]">
     <img
+      v-if="product.image"
       :src="product.image"
       :alt="product.title"
       class="block object-cover h-auto rounded-md aspect-square m-auto mb-2"
@@ -10,7 +11,7 @@
     <h1 class="mb-1 font-bold typography-headline-4">{{ product.title }}</h1>
     <strong class="block font-bold typography-headline-3">{{ product.price }}</strong>
     <div class="inline-flex items-center mt-4 mb-2">
-      <SfRating size="xs" :value="product.rating.rate" :max="5" />
+      <SfRating v-if="product.rating" size="xs" :value="product.rating.rate" :max="5" />
       <SfCounter class="ml-1" size="xs">{{ product.rating.count }}</SfCounter>
     </div>
     <p class="mb-4 font-normal typography-text-sm">
@@ -93,14 +94,9 @@ import { ref } from 'vue';
 import {
     SfButton,
     SfCounter,
-    SfLink,
     SfRating,
-    SfIconSafetyCheck,
     SfIconCompareArrows,
-    SfIconWarehouse,
-    SfIconPackage,
     SfIconFavorite,
-    SfIconSell,
     SfIconShoppingCart,
     SfIconAdd,
     SfIconRemove,
@@ -116,12 +112,15 @@ defineProps<{
 }>()
 
 const inputId = useId();
-const min = ref(1);
-const max = ref(999);
+const min = ref<number>(1);
+const max = ref<number>(999);
+
 const { count, inc, dec, set } = useCounter(1, { min: min.value, max: max.value });
+
 function handleOnChange(event: Event) {
-    const currentValue = (event.target as HTMLInputElement)?.value;
-    const nextValue = parseFloat(currentValue);
-    set(clamp(nextValue, min.value, max.value));
+  // Handle input event
+  const currentValue = (event.target as HTMLInputElement)?.value;
+  const nextValue = parseFloat(currentValue);
+  set(clamp(nextValue, min.value, max.value));
 }
 </script>

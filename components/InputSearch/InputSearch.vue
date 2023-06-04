@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, ref, watch } from 'vue';
+import { ref } from 'vue';
 import {
   SfIconCancel,
   SfIconSearch,
@@ -40,24 +40,12 @@ const emit = defineEmits<{
   (event: 'update:modelValue', payload: string): void;
 }>();
 
-const inputModel = ref('');
-const inputRef = ref();
+const inputModel = ref<string>('');
+const inputRef = ref<string>();
 
-const { isOpen, close, open } = useDisclosure();
-
-
-const submit = () => {
-    close();
-    alert(`Search for phrase: ${inputModel.value}`);
-};
+const { open } = useDisclosure();
 
 const reset = () => {
-    inputModel.value = '';
+  inputModel.value = '';
 };
-
-
-interface Product {
-    id: string;
-    name: string;
-}
 </script>
